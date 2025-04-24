@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MMA Gram</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <aside class="sidebar">
+      <div class="profile-pic"></div>
+      <h2>Mi cuenta</h2>
+      <div class="belts">
+        <p>Mi grado en Jiu Jitsu:</p>
+            <div id="bjj-belt-wrapper" class="belt-group">
+            <span id="bjj-belt" class="belt blue"></span>
+            <span class="stripe"></span>
+            <span class="stripe"></span>
+            <span class="stripe"></span>
+            <span class="stripe"></span>
+            </div>
+        
+        <p>Mi grado en Kickboxing: <span id="kb-belt" class="belt green"></span></p>
+
+
+        <p>Mi grado en Karate: <span id="wrestling-belt" class="belt purple"></span></p>
+    
+      </div>
+
+      <div class="calendar">
+        <h3>Tu calendario de batallas</h3>
+        <div class="calendar-box">
+          <div class="calendar-grid">
+            <!-- Generate 30 days dynamically -->
+            <script>
+              for (let i = 1; i <= 30; i++) {
+                document.write(`<div class="day" onclick="toggleDay(this)">Día ${i}</div>`);
+              }
+            </script>
+          </div>
+          <style>
+            .calendar-grid {
+              display: grid;
+              grid-template-columns: repeat(7, 1fr);
+              gap: 5px;
+            }
+            .day {
+              padding: 10px;
+              text-align: center;
+              background-color: #f0f0f0;
+              border: 1px solid #ccc;
+              cursor: pointer;
+            }
+            .day:hover {
+              background-color: #ddd;
+            }
+          </style>
+        
+        <div class="calendar-box"></div>
+      </div>
+      <button onclick="toggleConfig()" class="config-btn">⚙️ Configurar</button>
+
+        <div id="config-menu" class="config-menu hidden">
+        <h3>Configurar Disciplinas</h3>
+
+        <label><input type="checkbox" checked onchange="toggleDiscipline('bjj')"> Jiu Jitsu</label><br>
+        <label>Color cinturón: <input type="color" onchange="setBeltColor('bjj-belt', this.value)"></label><br>
+        <label>Grados:</label>
+        <br>
+        <input type="range" min="0" max="4" value="0" onchange="setStripes(this.value)">
+
+
+        <label><input type="checkbox" checked onchange="toggleDiscipline('kb')"> Kickboxing</label><br>
+        <input type="color" onchange="setBeltColor('kb-belt', this.value)"><br>
+
+        <label><input type="checkbox" checked onchange="toggleDiscipline('wrestling')"> Karate</label><br>
+        <input type="color" onchange="setBeltColor('wrestling-belt', this.value)">
+        </div>
+
+    </aside>
+
+    <main class="feed">
+      <div class="post">
+        <h3>Chris</h3>
+        <div class="post-image">
+          <img src="https://s.cafebazaar.ir/images/icons/com.us.game.mma.fighting.real-37cb506f-a997-42cb-ba17-f5e72b0182b2_512x512.png?x-img=v1/resize,h_256,w_256,lossless_false/optimize" alt="Imagen de pelea 1">
+        </div>
+        <button onclick="likePost(this)">❤️ Me gusta</button>
+      </div>
+      <div class="post">
+        <h3>Sara</h3>
+        <div class="post-image">[Imagen de pelea 2]</div>
+        <button onclick="likePost(this)">❤️ Me gusta</button>
+      </div>
+      <div class="post">
+        <h3>Sergio</h3>
+        <div class="post-image">[Imagen de pelea 3]</div>
+        <button onclick="likePost(this)">❤️ Me gusta</button>
+      </div>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
