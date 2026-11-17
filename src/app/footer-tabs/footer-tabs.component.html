@@ -1,0 +1,16 @@
+<ion-footer class="octa-footer">
+  <ion-row class="ion-text-center">
+    <ion-col (click)="navegar('/feed')" class="tab-col">
+      <ion-icon [icon]="imagesIcon" [class.active]="selectedTab === 'feed'"></ion-icon>
+      <span class="tab-label" [class.active]="selectedTab === 'feed'">Feed</span>
+    </ion-col>
+    <ion-col (click)="navegar('/calendario')" class="tab-col">
+      <ion-icon [icon]="calendarIcon" [class.active]="selectedTab === 'calendar'"></ion-icon>
+      <span class="tab-label" [class.active]="selectedTab === 'calendar'">Calendario</span>
+    </ion-col>
+    <ion-col (click)="navegar('/rangos')" class="tab-col">
+      <ion-icon [icon]="trophyIcon" [class.active]="selectedTab === 'ranges'"></ion-icon>
+      <span class="tab-label" [class.active]="selectedTab === 'ranges'">Rangos</span>
+    </ion-col>
+  </ion-row>
+</ion-footer>

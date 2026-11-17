@@ -1,0 +1,7 @@
+{
+  "name": "octastrike",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}

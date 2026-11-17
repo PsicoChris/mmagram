@@ -1,0 +1,39 @@
+<ion-header lines="none">
+  <ion-toolbar style="--background: #1e1e1e;">
+    <ion-title style="color: white; font-weight: bold;">CALENDARIO</ion-title>
+    <ion-buttons slot="end">
+      <ion-button color="light" (click)="logout()" title="Cerrar Sesión">
+        <ion-icon name="log-out-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content style="--background: #121212; color: white; padding-bottom: 80px;" class="ion-padding">
+  <div style="text-align: center; margin-bottom: 20px;">
+    <h3 style="font-weight: bold; color: #ff5722; letter-spacing: 1px;">MAYO 2026</h3>
+  </div>
+
+  <h5 style="color: #a0a0a0; font-size: 14px; margin-bottom: 15px;">PRÓXIMOS EVENTOS DE MMA</h5>
+
+  <ion-card *ngFor="let ev of eventos" style="background: #1e1e1e; margin: 0 0 15px 0; border-radius: 10px; box-shadow: none;">
+    <ion-item lines="none" style="--background: #1e1e1e; color: white;">
+      <div slot="start" style="text-align: center; padding-right: 12px; border-right: 2px solid #ff5722; min-width: 50px;">
+        <span style="display: block; font-size: 18px; font-weight: bold; color: white;">{{ev.fecha.split(' ')[0]}}</span>
+        <span style="font-size: 11px; color: #ff5722; font-weight: bold;">{{ev.fecha.split(' ')[1]}}</span>
+      </div>
+      <ion-label style="margin-left: 10px;">
+        <h2 style="font-weight: bold; color: white; font-size: 15px;">{{ev.titulo}}</h2>
+        <p style="color: #a0a0a0; font-size: 12px; margin: 4px 0;"><ion-icon name="time-outline" style="vertical-align: middle;"></ion-icon> {{ev.hora}}</p>
+        <p style="color: #a0a0a0; font-size: 12px; margin: 0;"><ion-icon name="location-outline" style="vertical-align: middle;"></ion-icon> {{ev.ubicacion}}</p>
+      </ion-label>
+    </ion-item>
+    <div style="padding: 0 16px 12px 16px; text-align: right;">
+      <ion-button size="small" [color]="ev.color" style="font-weight: bold; text-transform: none; --border-radius: 5px;">
+        Inscribirme
+      </ion-button>
+    </div>
+  </ion-card>
+</ion-content>
+
+<app-footer-tabs selectedTab="calendar"></app-footer-tabs>
