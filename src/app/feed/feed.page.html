@@ -1,6 +1,8 @@
 <ion-header>
   <ion-toolbar color="dark">
-    <ion-title>OctaStrike Feed</ion-title>
+    <ion-title style="font-weight: 800; letter-spacing: 1px;">
+      <span style="color: #ff5722;">⬢</span> OCTASTRIKE FEED
+    </ion-title>
     <ion-buttons slot="end">
       <ion-button color="light" (click)="logout()" title="Cerrar Sesión">
         <ion-icon name="log-out-outline"></ion-icon>
@@ -11,74 +13,84 @@
 
 <ion-content color="dark" class="ion-padding" style="padding-bottom: 80px;">
 
-  <!-- SECCIÓN DE HISTORIAS / ESTADOS SUPERIORES -->
-  <div class="stories-container" style="display: flex; overflow-x: auto; padding: 10px 0; margin-bottom: 10px;">
-    <div style="text-align: center; margin-right: 15px; min-width: 70px;">
-      <ion-avatar style="width: 55px; height: 55px; border: 2px solid #ff5722; margin: 0 auto 5px auto;">
-        <img src="https://ionicframework.com/docs/img/demos/avatar.svg" alt="Tu Estado" />
-      </ion-avatar>
-      <ion-label style="font-size: 11px; color: #aaa;">Tu Estado</ion-label>
+  <!-- SECCIÓN DE HISTORIAS / STORIES CAROUSEL -->
+  <div class="stories-container" style="display: flex; overflow-x: auto; padding: 6px 0 16px 0; margin-bottom: 8px; gap: 14px; align-items: flex-start;">
+    
+    <!-- BOTÓN PARA SUBIR FOTO A LA HISTORIA -->
+    <div (click)="openUploadStoryModal()" style="text-align: center; min-width: 72px; cursor: pointer;">
+      <div style="position: relative; width: 62px; height: 62px; margin: 0 auto 6px auto;">
+        <ion-avatar style="width: 100%; height: 100%; border: 2.5px dashed #ff5722; padding: 2px; background: #1e1e1e; display: flex; align-items: center; justify-content: center;">
+          <ion-icon name="camera-outline" style="font-size: 26px; color: #ff5722; margin: auto;"></ion-icon>
+        </ion-avatar>
+        <span style="position: absolute; bottom: -2px; right: -2px; background: #ff5722; color: white; border-radius: 50%; width: 22px; height: 22px; font-size: 14px; display: flex; align-items: center; justify-content: center; font-weight: bold; border: 2px solid #121212;">+</span>
+      </div>
+      <ion-label style="font-size: 11px; color: #ff5722; font-weight: 700; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 72px;">+ Tu Historia</ion-label>
     </div>
-    <div style="text-align: center; margin-right: 15px; min-width: 70px;">
-      <ion-avatar style="width: 55px; height: 55px; border: 2px solid #ff5722; margin: 0 auto 5px auto;">
-        <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=150" alt="Prof. Silva" />
-      </ion-avatar>
-      <ion-label style="font-size: 11px; color: #aaa;">Prof. Silva</ion-label>
+
+    <!-- LISTADO DE HISTORIAS DE ATLETAS -->
+    <div *ngFor="let st of stories; let i = index" (click)="openStory(st, i)" style="text-align: center; min-width: 72px; cursor: pointer;">
+      <div style="position: relative; width: 62px; height: 62px; margin: 0 auto 6px auto;">
+        <ion-avatar [style.border]="st.isUserStory ? '2.5px solid #10b981' : '2.5px solid #ff5722'" style="width: 100%; height: 100%; padding: 2px;">
+          <img [src]="st.avatar" [alt]="st.author" style="border-radius: 50%; object-fit: cover;" />
+        </ion-avatar>
+        <span style="position: absolute; bottom: 0; right: 0; background: #ff5722; color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 10px; display: flex; align-items: center; justify-content: center; font-weight: bold;">⚡</span>
+      </div>
+      <ion-label style="font-size: 11px; color: #ddd; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 72px;">{{ st.author }}</ion-label>
     </div>
   </div>
 
-  <!-- LISTADO DINÁMICO DE TARJETAS DEL FEED -->
-  <ion-card *ngFor="let post of posts" color="dark" style="margin: 0 0 20px 0; background: #1e1e1e; border-radius: 12px; border: 1px solid #2a2a2a;">
-    <ion-item lines="none" color="none" style="--padding-start: 10px;">
-      <ion-avatar slot="start" style="width: 40px; height: 40px;">
+  <!-- LISTADO DE POSTS -->
+  <ion-card *ngFor="let post of posts" color="dark" style="margin: 0 0 20px 0; background: #1e1e1e; border-radius: 14px; border: 1px solid #2a2a2a; overflow: hidden;">
+    <ion-item lines="none" color="none" style="--padding-start: 12px; padding-top: 4px;">
+      <ion-avatar slot="start" style="width: 42px; height: 42px; border: 1.5px solid #ff5722;">
         <img [src]="post.avatar" alt="Avatar" />
       </ion-avatar>
-      <ion-label style="margin-left: -5px;">
+      <ion-label style="margin-left: -4px;">
         <h3 style="color: white; font-weight: bold; margin: 0; font-size: 14px;">{{ post.author }}</h3>
-        <p style="color: #ff5722; font-size: 11px; font-weight: 600; margin: 2px 0 0 0; letter-spacing: 0.5px;">{{ post.discipline }}</p>
+        <p style="color: #ff5722; font-size: 11px; font-weight: 700; margin: 2px 0 0 0; letter-spacing: 0.5px;">{{ post.discipline }}</p>
       </ion-label>
       <ion-label slot="end" style="text-align: end;">
-        <p style="color: #666; font-size: 11px; margin: 0;">{{ post.time }}</p>
+        <p style="color: #777; font-size: 11px; margin: 0;">{{ post.time }}</p>
       </ion-label>
     </ion-item>
 
-    <!-- Imagen de la publicación técnica -->
-    <img [src]="post.image" style="width: 100%; max-height: 350px; object-fit: cover;" alt="Imagen del post" />
+    <!-- Imagen de la publicación -->
+    <img [src]="post.image" style="width: 100%; max-height: 380px; object-fit: cover; display: block;" alt="Imagen del post" />
 
-    <ion-card-content style="padding: 12px;">
-      <!-- Descripción del Post -->
-      <p style="color: #e0e0e0; font-size: 13.5px; line-height: 1.4; margin: 0 0 12px 0;">
+    <ion-card-content style="padding: 14px;">
+      <!-- Descripción -->
+      <p style="color: #e2e8f0; font-size: 13.5px; line-height: 1.45; margin: 0 0 12px 0;">
         {{ post.description }}
       </p>
 
-      <!-- Panel de Interacciones (Likes y Comentarios) -->
-      <div style="display: flex; align-items: center; justify-content: flex-start; gap: 15px; border-top: 1px solid #2a2a2a; padding-top: 10px;">
-        <ion-button fill="clear" size="small" (click)="toggleLike(post)" style="--padding-start: 0; --padding-end: 0; margin: 0; height: 24px;">
+      <!-- Panel de Interacciones -->
+      <div style="display: flex; align-items: center; justify-content: flex-start; gap: 20px; border-top: 1px solid #2a2a2a; padding-top: 10px;">
+        <ion-button fill="clear" size="small" (click)="toggleLike(post)" style="--padding-start: 0; --padding-end: 0; margin: 0; height: 26px;">
           <ion-icon [name]="post.liked ? 'heart' : 'heart-outline'" [color]="post.liked ? 'danger' : 'light'" style="font-size: 22px;"></ion-icon>
-          <span style="color: #e0e0e0; font-size: 13px; margin-left: 6px; font-weight: bold;">{{ post.likes }}</span>
+          <span style="color: #f1f5f9; font-size: 13px; margin-left: 6px; font-weight: bold;">{{ post.likes }}</span>
         </ion-button>
 
-        <ion-button fill="clear" size="small" style="--padding-start: 0; --padding-end: 0; margin: 0; height: 24px;">
+        <ion-button fill="clear" size="small" (click)="openComments(post)" style="--padding-start: 0; --padding-end: 0; margin: 0; height: 26px;">
           <ion-icon name="chatbubble-outline" color="light" style="font-size: 20px;"></ion-icon>
-          <span style="color: #aaa; font-size: 13px; margin-left: 6px;">Comentar</span>
+          <span style="color: #cbd5e1; font-size: 13px; margin-left: 6px;">{{ (post.comments?.length || 0) }} Comentarios</span>
         </ion-button>
       </div>
     </ion-card-content>
   </ion-card>
 
-  <!-- BOTÓN FLOTANTE PARA CREAR PUBLICACIÓN -->
-  <ion-fab slot="fixed" vertical="bottom" horizontal="end" style="margin-bottom: 70px;">
-    <ion-fab-button color="danger" (click)="openCreateModal()">
+  <!-- BOTÓN FLOTANTE: CREAR POST -->
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end" style="margin-bottom: 75px;">
+    <ion-fab-button style="--background: #ff5722;" (click)="openCreateModal()">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>
 
-  <!-- MODAL EMERGENTE -->
+  <!-- MODAL: CREAR PUBLICACIÓN -->
   <ion-modal [isOpen]="isModalOpen" (didDismiss)="closeCreateModal()">
     <ng-template>
       <ion-header>
         <ion-toolbar color="dark">
-          <ion-title>Nueva Publicación</ion-title>
+          <ion-title>Nuevo Sparring / Log</ion-title>
           <ion-buttons slot="end">
             <ion-button (click)="closeCreateModal()" color="light">Cancelar</ion-button>
           </ion-buttons>
@@ -86,37 +98,185 @@
       </ion-header>
 
       <ion-content color="dark" class="ion-padding">
-        
-        <!-- SECTOR MULTIMEDIA: VISTA PREVIA Y BOTÓN DE SUBIDA -->
         <div style="text-align: center; margin-bottom: 20px;">
-          <img [src]="previewImage" style="border-radius: 12px; max-height: 200px; width: 100%; object-fit: cover; border: 1px solid #333; margin-bottom: 10px;" alt="Vista previa" />
+          <img [src]="previewImage" style="border-radius: 12px; max-height: 220px; width: 100%; object-fit: cover; border: 1px solid #333; margin-bottom: 12px;" alt="Vista previa" />
           
           <input type="file" id="file-upload" accept="image/*" (change)="onFileSelected($event)" style="display: none;" />
-          <label for="file-upload" style="background-color: #333; color: white; padding: 8px 16px; border-radius: 6px; display: inline-block; cursor: pointer; font-size: 13px; font-weight: bold; border: 1px solid #555;">
-            📁 Seleccionar Foto desde el Dispositivo
+          <label for="file-upload" style="background-color: #27272a; color: white; padding: 10px 18px; border-radius: 8px; display: inline-block; cursor: pointer; font-size: 13px; font-weight: 700; border: 1px solid #3f3f46;">
+            📷 Seleccionar Foto de la Sesión
           </label>
         </div>
 
-        <!-- Inputs del Formulario -->
         <ion-item fill="outline" mode="md" class="ion-margin-bottom" style="--background: #1e1e1e; --color: white; border-radius: 8px;">
-          <ion-label position="floating" style="color: #aaa;">Disciplina (Ej: BJJ, Muay Thai, MMA)</ion-label>
+          <ion-label position="floating" style="color: #a1a1aa;">Disciplina (BJJ, Muay Thai, Wrestling, MMA)</ion-label>
           <ion-input [(ngModel)]="newDisciplina" type="text" style="color: white;"></ion-input>
         </ion-item>
 
         <ion-item fill="outline" mode="md" class="ion-margin-bottom" style="--background: #1e1e1e; --color: white; border-radius: 8px;">
-          <ion-label position="floating" style="color: #aaa;">¿Qué estás entrenando hoy?</ion-label>
+          <ion-label position="floating" style="color: #a1a1aa;">¿Qué técnicas o rounds entrenaste?</ion-label>
           <ion-textarea [(ngModel)]="newDescription" rows="4" style="color: white;"></ion-textarea>
         </ion-item>
 
-        <!-- Botón de Envío -->
-        <ion-button expand="block" color="danger" (click)="publicarPost()" [disabled]="!newDescription.trim()" style="margin-top: 20px; font-weight: bold; height: 45px; --border-radius: 8px;">
+        <ion-button expand="block" (click)="publicarPost()" [disabled]="!newDescription.trim()" style="--background: #ff5722; margin-top: 20px; font-weight: bold; height: 48px; --border-radius: 8px; color: white;">
           Compartir en OctaStrike 🥊
         </ion-button>
       </ion-content>
     </ng-template>
   </ion-modal>
 
+  <!-- MODAL: COMENTARIOS DEL POST -->
+  <ion-modal [isOpen]="isCommentModalOpen" (didDismiss)="closeComments()" [initialBreakpoint]="0.75" [breakpoints]="[0, 0.5, 0.75, 1.0]">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar color="dark">
+          <ion-title style="font-size: 16px;">Comentarios de Atletas</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="closeComments()" color="light">Cerrar</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+
+      <ion-content color="dark" class="ion-padding" style="--background: #121212;">
+        <ion-list style="background: transparent; padding: 0;">
+          <div *ngIf="!activePostForComments?.comments || activePostForComments?.comments?.length === 0" style="text-align: center; color: #71717a; padding: 30px 10px;">
+            <p>Aún no hay comentarios. ¡Sé el primero en felicitar o comentar la técnica!</p>
+          </div>
+
+          <ion-item *ngFor="let c of activePostForComments?.comments" lines="full" style="--background: #18181b; margin-bottom: 8px; border-radius: 10px; --border-color: #27272a;">
+            <ion-avatar slot="start" style="width: 36px; height: 36px;">
+              <img [src]="c.avatar" alt="Avatar" />
+            </ion-avatar>
+            <ion-label class="ion-text-wrap">
+              <h4 style="color: white; font-weight: bold; font-size: 13px; margin: 0 0 2px 0;">{{ c.author }}</h4>
+              <p style="color: #e4e4e7; font-size: 13px; line-height: 1.35; margin: 0;">{{ c.text }}</p>
+              <ion-note style="font-size: 10px; color: #71717a; margin-top: 4px; display: inline-block;">{{ c.time }}</ion-note>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+
+        <!-- Input de Nuevo Comentario -->
+        <div style="margin-top: 15px; display: flex; gap: 8px; align-items: center; background: #18181b; padding: 6px 12px; border-radius: 12px; border: 1px solid #27272a;">
+          <ion-input [(ngModel)]="newCommentText" placeholder="Escribe un comentario..." style="color: white; font-size: 13px;" (keyup.enter)="enviarComentario()"></ion-input>
+          <ion-button fill="clear" color="warning" (click)="enviarComentario()" [disabled]="!newCommentText.trim()">
+            <ion-icon name="send"></ion-icon>
+          </ion-button>
+        </div>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+  <!-- MODAL: SUBIR FOTO A LA HISTORIA -->
+  <ion-modal [isOpen]="isUploadStoryModalOpen" (didDismiss)="closeUploadStoryModal()">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar color="dark">
+          <ion-title>Subir Foto a Historia</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="closeUploadStoryModal()" color="light">Cancelar</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+
+      <ion-content color="dark" class="ion-padding">
+        <p style="color: #a1a1aa; font-size: 13px; margin-top: 0;">
+          Comparte un instante o drill con la comunidad de OctaStrike. Tu historia incluirá pase automático para otros atletas.
+        </p>
+
+        <!-- Preview y selección de foto -->
+        <div style="text-align: center; margin-bottom: 20px;">
+          <img [src]="storyPreviewImage" style="border-radius: 12px; max-height: 250px; width: 100%; object-fit: cover; border: 2px solid #ff5722; margin-bottom: 12px;" alt="Vista previa de historia" />
+          
+          <input type="file" id="story-file-upload" accept="image/*" (change)="onStoryFileSelected($event)" style="display: none;" />
+          <label for="story-file-upload" style="background-color: #ff5722; color: white; padding: 10px 18px; border-radius: 8px; display: inline-block; cursor: pointer; font-size: 13px; font-weight: 700;">
+            📷 Seleccionar Foto de la Sesión
+          </label>
+        </div>
+
+        <ion-item fill="outline" mode="md" class="ion-margin-bottom" style="--background: #1e1e1e; --color: white; border-radius: 8px;">
+          <ion-label position="floating" style="color: #a1a1aa;">Disciplina (Ej: BJJ, Muay Thai, MMA)</ion-label>
+          <ion-input [(ngModel)]="newStoryDiscipline" type="text" style="color: white;"></ion-input>
+        </ion-item>
+
+        <ion-item fill="outline" mode="md" class="ion-margin-bottom" style="--background: #1e1e1e; --color: white; border-radius: 8px;">
+          <ion-label position="floating" style="color: #a1a1aa;">Pie de foto / drill practicado</ion-label>
+          <ion-textarea [(ngModel)]="newStoryCaption" rows="3" placeholder="Ej: 5 rounds de golpeo al costal..." style="color: white;"></ion-textarea>
+        </ion-item>
+
+        <ion-button expand="block" (click)="publicarHistoria()" style="--background: #ff5722; margin-top: 25px; font-weight: bold; height: 48px; --border-radius: 8px; color: white;">
+          Publicar en Mi Historia ⚡
+        </ion-button>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+  <!-- MODAL: VISOR DE HISTORIAS CON SELF-PASS (AUTO-ADVANCE) -->
+  <ion-modal [isOpen]="isStoryModalOpen" (didDismiss)="closeStory()">
+    <ng-template>
+      <div 
+        (mousedown)="pausarHistoria()" 
+        (mouseup)="reanudarHistoria()" 
+        (touchstart)="pausarHistoria()" 
+        (touchend)="reanudarHistoria()"
+        style="height: 100%; background: #000; display: flex; flex-direction: column; justify-content: space-between; position: relative; user-select: none;">
+        
+        <!-- BARRAS DE PROGRESO SEGMENTADAS (SELF-PASS) -->
+        <div style="position: absolute; top: 12px; left: 12px; right: 12px; display: flex; gap: 4px; z-index: 20;">
+          <div *ngFor="let st of stories; let i = index" style="flex: 1; height: 3.5px; background: rgba(255,255,255,0.25); border-radius: 2px; overflow: hidden;">
+            <div 
+              [style.width.%]="i < currentStoryIndex ? 100 : (i === currentStoryIndex ? storyProgress : 0)" 
+              style="height: 100%; background: #ff5722; transition: width 0.05s linear;">
+            </div>
+          </div>
+        </div>
+
+        <!-- CABECERA DEL VISOR -->
+        <div style="position: absolute; top: 24px; left: 16px; right: 16px; display: flex; justify-content: space-between; align-items: center; z-index: 20; background: rgba(0,0,0,0.65); padding: 8px 14px; border-radius: 30px; backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.1);">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <ion-avatar style="width: 36px; height: 36px; border: 2px solid #ff5722;">
+              <img [src]="selectedStory?.avatar" alt="Avatar" />
+            </ion-avatar>
+            <div>
+              <p style="color: white; margin: 0; font-weight: bold; font-size: 13px;">{{ selectedStory?.author }}</p>
+              <p style="color: #ff5722; margin: 0; font-size: 11px;">{{ selectedStory?.discipline }}</p>
+            </div>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <!-- Indicador y Toggle de Self-Pass -->
+            <ion-button fill="clear" size="small" (click)="toggleAutoPass()" style="font-size: 11px; --color: #ff5722; margin: 0; text-transform: none;">
+              <ion-icon [name]="autoPassEnabled ? 'play-outline' : 'pause-outline'" style="margin-right: 4px; font-size: 14px;"></ion-icon>
+              {{ autoPassEnabled ? 'Auto-Pass' : 'Pausado' }}
+            </ion-button>
+
+            <!-- Botón Cerrar -->
+            <ion-button fill="clear" color="light" (click)="closeStory()" style="margin: 0;">
+              <ion-icon name="close-outline" style="font-size: 24px;"></ion-icon>
+            </ion-button>
+          </div>
+        </div>
+
+        <!-- ZONAS TÁCTILES PARA NAVEGAR HISTORIAS (TAP IZQ/DER) -->
+        <div style="position: absolute; top: 70px; bottom: 90px; left: 0; width: 35%; z-index: 15;" (click)="irAAnteriorHistoria()"></div>
+        <div style="position: absolute; top: 70px; bottom: 90px; right: 0; width: 65%; z-index: 15;" (click)="irASiguienteHistoria()"></div>
+
+        <!-- IMAGEN PRINCIPAL DE LA HISTORIA -->
+        <div style="flex: 1; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #000;">
+          <img [src]="selectedStory?.image" style="width: 100%; height: 100%; object-fit: cover;" alt="Historia" />
+        </div>
+
+        <!-- PIE DE FOTO / CAPTION Y CONTROLES -->
+        <div style="position: absolute; bottom: 25px; left: 16px; right: 16px; background: rgba(0,0,0,0.75); padding: 14px; border-radius: 14px; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.15); z-index: 20;">
+          <p style="color: white; margin: 0; font-size: 13.5px; line-height: 1.45;">{{ selectedStory?.caption }}</p>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px; font-size: 11px; color: #a1a1aa;">
+            <span>Historia {{ currentStoryIndex + 1 }} de {{ stories.length }}</span>
+            <span style="color: #ff5722;">Toca der. para avanzar | izq. para retroceder</span>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </ion-modal>
+
 </ion-content>
 
-<!-- NAVEGACIÓN GLOBAL POR PESTAÑAS (FOOTER TABS) -->
+<!-- NAVEGACIÓN GLOBAL POR PESTAÑAS -->
 <app-footer-tabs selectedTab="feed"></app-footer-tabs>

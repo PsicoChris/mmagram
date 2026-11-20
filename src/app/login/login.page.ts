@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IonContent, IonItem, IonInput, IonButton, AlertController } from '@ionic/angular/standalone';
 import { AuthService } from '../services/auth';
+import { Haptics, ImpactStyle, NotificationType } from '@capacitor/haptics';
 
 @Component({
   selector: 'app-login',
@@ -30,8 +31,14 @@ export class LoginPage {
   async ingresar() {
     const success = this.authService.login(this.correo, this.contrasena);
     if (success) {
+      try {
+        await Haptics.impact({ style: ImpactStyle.Medium });
+      } catch { /* platform fallback */ }
       this.router.navigate(['/feed']);
     } else {
+      try {
+        await Haptics.notification({ type: NotificationType.Error });
+      } catch { /* platform fallback */ }
       const alert = await this.alertController.create({
         header: 'Acceso Denegado',
         message: 'El correo o la contraseña no son válidos. Usa las credenciales de prueba.',
